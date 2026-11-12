@@ -1,0 +1,21 @@
+name: Compilar EXE
+on: [push]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Instalar dependencias
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+      - name: Generar EXE
+        run: pyinstaller --noconsole --onefile --name "ajedrez" ajedrez.py
+      - name: Subir archivo
+        uses: actions/upload-artifact@v4
+        with:
+          name: ajedrez-windows
+          path: dist/ajedrez.exe
